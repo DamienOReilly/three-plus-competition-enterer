@@ -8,7 +8,7 @@ import org.http4s.client.Client
 import org.http4s.client.dsl.Http4sClientDsl
 import org.http4s.headers.{Accept, Authorization}
 
-class CometitionEntererService(config: AppConfig) extends Http4sClientDsl[IO] {
+class CompetitionEntererService(config: AppConfig) extends Http4sClientDsl[IO] {
 
   def enterCompetitions(implicit client: Client[IO]): Result = {
     for {

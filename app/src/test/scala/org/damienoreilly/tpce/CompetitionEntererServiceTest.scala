@@ -8,7 +8,7 @@ import org.http4s.{HttpApp, Response}
 import org.scalatest.EitherValues._
 import org.scalatest.{Matchers, WordSpecLike}
 
-class CometitionEntererServiceTest extends WordSpecLike with Http4sDsl[IO] with Matchers {
+class CompetitionEntererServiceTest extends WordSpecLike with Http4sDsl[IO] with Matchers {
 
   private val config =
     AppConfig(
@@ -17,7 +17,7 @@ class CometitionEntererServiceTest extends WordSpecLike with Http4sDsl[IO] with 
       uri("http://localhost")
     )
 
-  "CometitionEntererService" should {
+  "CompetitionEntererService" should {
 
     "return RequestError if Three Plus API cannot serve the request" in {
 
@@ -26,7 +26,7 @@ class CometitionEntererServiceTest extends WordSpecLike with Http4sDsl[IO] with 
 
       val expectedResponse = RequestError("invalid_grant", "Bad credentials")
 
-      val service = new CometitionEntererService(config)
+      val service = new CompetitionEntererService(config)
       service.enterCompetitions.value.unsafeRunSync.left.value shouldBe expectedResponse
 
     }
@@ -45,7 +45,7 @@ class CometitionEntererServiceTest extends WordSpecLike with Http4sDsl[IO] with 
         "/some/path"
       )
 
-      val service = new CometitionEntererService(config)
+      val service = new CompetitionEntererService(config)
       service.enterCompetitions.value.unsafeRunSync.left.value shouldBe expectedResponse
 
     }
@@ -57,7 +57,7 @@ class CometitionEntererServiceTest extends WordSpecLike with Http4sDsl[IO] with 
 
       val expectedResponse = UnknownResponse("Malformed message body: Invalid JSON")
 
-      val service = new CometitionEntererService(config)
+      val service = new CompetitionEntererService(config)
       service.enterCompetitions.value.unsafeRunSync.left.value shouldBe expectedResponse
 
     }
@@ -78,7 +78,7 @@ class CometitionEntererServiceTest extends WordSpecLike with Http4sDsl[IO] with 
 
       implicit val client: Client[IO] = Client.fromHttpApp(resp)
 
-      val service = new CometitionEntererService(config)
+      val service = new CompetitionEntererService(config)
       val compResults = service.enterCompetitions.value.unsafeRunSync.right.value
 
       compResults.size shouldBe 3 //  4 comps , one is already entered, so we shouldn't attempt to enter again.

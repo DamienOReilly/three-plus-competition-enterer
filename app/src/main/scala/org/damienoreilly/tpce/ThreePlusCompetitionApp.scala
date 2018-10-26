@@ -28,7 +28,7 @@ object ThreePlusEntererApp extends IOApp with StrictLogging {
     import pureconfig.module.http4s._
     val config = pureconfig.loadConfigOrThrow[AppConfig]
 
-    val service = new CometitionEntererService(config)
+    val service = new CompetitionEntererService(config)
 
     service.enterCompetitions.value.flatMap(
       _.fold(
