@@ -8,7 +8,7 @@ import org.http4s.client.blaze.BlazeClientBuilder
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object ThreePlusEntererApp extends IOApp with StrictLogging {
+object ThreePlusCompetitionApp extends IOApp with StrictLogging {
 
   override def run(args: List[String]): IO[ExitCode] =
     BlazeClientBuilder[IO](global).resource

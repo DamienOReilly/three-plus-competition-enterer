@@ -61,5 +61,5 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 lazy val app = (project in file("app"))
   .settings(commonSettings: _*)
   .settings(
-    mainClass in assembly := Some("org.damienoreilly.tpce.ThreePlusCompetitionEntererApp"),
+    mainClass in assembly := Some("org.damienoreilly.tpce.ThreePlusCompetitionApp"),
   )
