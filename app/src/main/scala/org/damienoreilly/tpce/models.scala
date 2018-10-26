@@ -6,7 +6,7 @@ import io.circe.Decoder._
 import io.circe.generic.auto._
 import io.circe.generic.semiauto._
 import org.http4s.circe.{jsonEncoderOf, jsonOf}
-import org.http4s.{EntityDecoder, EntityEncoder}
+import org.http4s.{EntityDecoder, EntityEncoder, Uri}
 
 sealed trait ThreePlusError
 
@@ -78,6 +78,12 @@ case class EnterCompetition(
   offerQuantity: Int = 1,
   sendSMS: Boolean = true,
   offerName: String
+)
+
+case class AppConfig(
+  username: String,
+  password: String,
+  api: Uri
 )
 
 final case class ThreePlusEntererException(message: String) extends Exception(message)
