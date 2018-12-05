@@ -1,6 +1,7 @@
 name := "ThreePlusCompetitionEnterer"
 
 lazy val commonSettings = Seq(
+  version := "0.2",
   organization := "org.damienoreilly.tpce",
   scalaVersion := "2.12.7",
   test in assembly := {},

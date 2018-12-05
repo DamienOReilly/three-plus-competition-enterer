@@ -38,4 +38,4 @@ then
    exit 1
 fi
 
-docker build -t $IMG . && docker tag $IMG $LATEST && docker push $NAME
+docker build -t $IMG . && docker tag $IMG $LATEST
