@@ -19,6 +19,7 @@ object ThreePlusCompetitionApp extends IOApp with StrictLogging {
     implicit val c: Client[IO] = client
 
     import pureconfig.module.http4s._
+    import pureconfig.generic.auto._
     val config = pureconfig.loadConfigOrThrow[AppConfig]
 
     val service = new CompetitionEntererService(config)

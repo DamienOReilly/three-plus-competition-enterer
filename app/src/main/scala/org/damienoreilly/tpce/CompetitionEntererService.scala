@@ -45,12 +45,12 @@ class CompetitionEntererService(config: AppConfig) extends Http4sClientDsl[IO] {
     })
 
   private val loginRequest = Method.POST(
-    config.api.withPath("/core/oauth/token"),
     UrlForm(
       "grant_type" -> "password",
       "username" -> config.username,
       "password" -> config.password
     ),
+    config.api.withPath("/core/oauth/token"),
     Authorization(BasicCredentials("clientid", "secret")),
     Accept(MediaType.application.json)
   )
@@ -62,8 +62,8 @@ class CompetitionEntererService(config: AppConfig) extends Http4sClientDsl[IO] {
   )
 
   private def enterCompetitionRequest(token: String, offer: Int, enter: EnterCompetition) = Method.PUT(
-    config.api.withPath(s"/core/offers/$offer/competitions/purchase"),
     enter,
+    config.api.withPath(s"/core/offers/$offer/competitions/purchase"),
     Authorization(Credentials.Token(AuthScheme.Bearer, token)),
     Accept(MediaType.application.json)
   )

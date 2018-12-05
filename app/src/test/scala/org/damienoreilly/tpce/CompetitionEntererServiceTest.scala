@@ -4,7 +4,7 @@ import cats.effect.IO
 import org.damienoreilly.tpce.TestData._
 import org.http4s.client.Client
 import org.http4s.dsl.Http4sDsl
-import org.http4s.{HttpApp, Response}
+import org.http4s.{HttpApp, Response, Uri}
 import org.scalatest.EitherValues._
 import org.scalatest.{Matchers, WordSpecLike}
 
@@ -14,7 +14,7 @@ class CompetitionEntererServiceTest extends WordSpecLike with Http4sDsl[IO] with
     AppConfig(
       "name",
       "pass",
-      uri("http://localhost")
+      Uri.uri("http://localhost")
     )
 
   "CompetitionEntererService" should {
