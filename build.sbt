@@ -1,9 +1,9 @@
 name := "ThreePlusCompetitionEnterer"
 
 lazy val commonSettings = Seq(
-  version := "0.2",
+  version := "0.3",
   organization := "org.damienoreilly.tpce",
-  scalaVersion := "2.12.7",
+  scalaVersion := "2.12.8",
   test in assembly := {},
   scalacOptions in Compile ++= Seq(
     "-deprecation", // Emit warning and location for usages of deprecated APIs.

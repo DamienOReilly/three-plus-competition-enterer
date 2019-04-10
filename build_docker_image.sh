@@ -8,7 +8,7 @@ command -v docker >/dev/null 2>&1 || { echo >&2 "docker not found."; exit 1; }
 
 BINARY_NAME=threeplus
 GRAALVM_CMD="cd /tmp && native-image --no-server --verbose -H:+ReportUnsupportedElementsAtRuntime -H:IncludeResources=application.conf -H:IncludeResources=logback.xml -H:Log=registerResource: --enable-https -jar $PWD/app/target/scala-2.12/ThreePlusCompetitionApp-assembly-*.jar -H:Name=$BINARY_NAME && cp /opt/graalvm-ce-*/jre/lib/amd64/libsunec.so $PWD/target && cp $BINARY_NAME $PWD/target && strip $PWD/target/$BINARY_NAME && strip $PWD/target/libsunec.so"
-GRAALVM_VERSION=1.0.0-rc9
+GRAALVM_VERSION=1.0.0-rc15
 
 NAME="damo2k/threepluscompetitionenterer"
 TAG=$(git log -1 --pretty=%h)
