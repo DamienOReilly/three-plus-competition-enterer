@@ -3,9 +3,13 @@ name := "ThreePlusCompetitionApp"
 import Versions._
 
 libraryDependencies ++= Seq(
+
   "org.http4s" %% "http4s-dsl"          % http4sVersion,
   "org.http4s" %% "http4s-blaze-client" % http4sVersion,
   "org.http4s" %% "http4s-circe"        % http4sVersion,
+
+  "io.chrisdavenport" %% "log4cats-core"    % log4catsVersion,
+  "io.chrisdavenport" %% "log4cats-slf4j"   % log4catsVersion,
 
   "io.circe" %% "circe-generic"        % circeVersion,
   "io.circe" %% "circe-literal"        % circeVersion,
@@ -18,6 +22,8 @@ libraryDependencies ++= Seq(
 
   "ch.qos.logback" % "logback-classic" % logbackVersion,
 
-  "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
+  "org.scalatest" %% "scalatest" % scalaTestVersion % Test,
+
+  "com.disneystreaming" %% "weaver-framework" % weaverFrameworkVersion % Test
 
 )

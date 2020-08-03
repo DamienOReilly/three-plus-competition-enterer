@@ -8,13 +8,13 @@ import io.circe.generic.semiauto._
 import org.http4s.circe.{jsonEncoderOf, jsonOf}
 import org.http4s.{EntityDecoder, EntityEncoder, Uri}
 
-sealed trait ThreePlusError
+sealed trait ThreePlusError extends RuntimeException
 
 case class UnknownResponse(reason: String) extends ThreePlusError
 
 case class RequestError(
   error: String,
-  error_description: String,
+  error_description: String
 ) extends ThreePlusError
 
 case class FatalError(
@@ -85,8 +85,6 @@ case class AppConfig(
   password: String,
   api: Uri
 )
-
-final case class ThreePlusEntererException(message: String) extends Exception(message)
 
 object Codecs {
   implicit val tokenEntityDecoder: EntityDecoder[IO, Token] = jsonOf[IO, Token]
