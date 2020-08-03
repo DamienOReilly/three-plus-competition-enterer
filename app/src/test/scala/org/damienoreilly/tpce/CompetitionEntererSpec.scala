@@ -97,16 +97,16 @@ object CompetitionEntererSpec
       comp <- IO(
         result.fold(_ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
                     _.map(_._2).map(_.value)))
-      _ <- expect(comp.size == 3)
       first = comp.head
-      second = comp.head
-      third = comp.head
-      _ <- first.map(item =>
-        expect(item.equals(Right(CompetitionEntered(None, None, None, None, None)))))
-      _ <- second.map(item =>
-        expect(item.equals(Right(CompetitionEntered(None, None, None, None, None)))))
-      _ <- third.map(item =>
-        expect(item.equals(Left(CompetitionEnteringError("subscriber.offer.limit.reached", 411)))))
+      second = comp(1)
+      third = comp(2)
+      _ <- expect(comp.size == 3).failFast
+      _ <- first.flatMap(item =>
+        expect(item.equals(Right(CompetitionEntered(None, None, None, None, None)))).failFast)
+      _ <- second.flatMap(item =>
+        expect(item.equals(Right(CompetitionEntered(None, None, None, None, None)))).failFast)
+      _ <- third.flatMap(item =>
+        expect(item.equals(Left(CompetitionEnteringError("subscriber.offer.limit.reached", 411)))).failFast)
     } yield success
   }
 }
