@@ -31,7 +31,7 @@ object CompetitionEnterer extends Http4sClientDsl[IO] {
     } yield
       for {
         comp <- comps
-        if comp.remaining == 1
+        if comp.remaining == 1 && !comp.`type`.contains("static")
       } yield
         (
           comp,

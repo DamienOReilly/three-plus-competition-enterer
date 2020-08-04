@@ -1,5 +1,5 @@
-FROM jeanblanchard/alpine-glibc:3.8
+FROM FROM alpine:3.12.0
 
-COPY target/threeplus target/libsunec.so ./
+COPY app/target/graalvm-native-image/ThreePlusCompetitionApp ./
 
-ENTRYPOINT ["./threeplus"]
+ENTRYPOINT ["./ThreePlusCompetitionApp"]

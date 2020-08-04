@@ -1,13 +1,12 @@
 package org.damienoreilly.tpce
 
 import cats.effect.{ExitCode, IO, IOApp}
-import com.typesafe.scalalogging.StrictLogging
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object ThreePlusCompetitionApp extends IOApp with StrictLogging {
+object ThreePlusCompetitionApp extends IOApp {
 
   override def run(args: List[String]): IO[ExitCode] =
     BlazeClientBuilder[IO](global).resource
