@@ -36,7 +36,6 @@ graalVMNativeImageOptions ++= Seq(
   "--enable-https"
 )
 
-
 libraryDependencies ++= Seq(
 
   "org.http4s" %% "http4s-dsl"          % http4sVersion,

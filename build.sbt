@@ -1,7 +1,5 @@
 name := "ThreePlusCompetitionEnterer"
 
-//import com.typesafe.sbt.packager.graalvmnativeimage._
-
 lazy val commonSettings = Seq(
   version := "0.4",
   organization := "org.damienoreilly.tpce",

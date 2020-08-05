@@ -91,7 +91,7 @@ object CompetitionEntererSpec
 
     val client: Client[IO] = Client.fromHttpApp(resp)
 
-    // Its a bit clunky dealing with the types and using weaver test-suite. There might tbe a nicer way to do this.
+    // Its a bit clunky dealing with the types and using weaver test-suite. There might be a nicer way to do this.
     for {
       result <- CompetitionEnterer.enterCompetitions(config, client).value
       comp <- IO(
@@ -109,4 +109,49 @@ object CompetitionEntererSpec
         expect(item.equals(Left(CompetitionEnteringError("subscriber.offer.limit.reached", 411)))).failFast)
     } yield success
   }
+
+  simpleTest("enterCompetitions should not try enter competitions with property remaining != 1") {
+
+    val resp = HttpApp[IO] {
+      case POST -> Root / "core" / "oauth" / "token" =>
+        Ok(loginSuccessResponse)
+      case GET -> Root / "core" / "offers" / "competitions" =>
+        Ok(remainingIsZeroCompetitions)
+      case _ => NotFound()
+    }
+
+    val client: Client[IO] = Client.fromHttpApp(resp)
+
+    for {
+      result <- CompetitionEnterer.enterCompetitions(config, client).value
+      comp <- IO(
+        result.fold(_ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
+                    _.map(_._2).map(_.value)))
+      _ <- expect(comp.isEmpty).failFast
+
+    } yield success
+  }
+
+  simpleTest("enterCompetitions should not try enter competitions with type 'static'") {
+
+    val resp = HttpApp[IO] {
+      case POST -> Root / "core" / "oauth" / "token" =>
+        Ok(loginSuccessResponse)
+      case GET -> Root / "core" / "offers" / "competitions" =>
+        Ok(staticCompetition)
+      case _ => NotFound()
+    }
+
+    val client: Client[IO] = Client.fromHttpApp(resp)
+
+    for {
+      result <- CompetitionEnterer.enterCompetitions(config, client).value
+      comp <- IO(
+        result.fold(_ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
+                    _.map(_._2).map(_.value)))
+      _ <- expect(comp.isEmpty).failFast
+
+    } yield success
+  }
+
 }

@@ -95,30 +95,6 @@ object TestData {
     |	"maxNbOfOffer": 1,
     |	"remaining": 1
     |}, {
-    |	"id": 333,
-    |	"category": "competitions",
-    |	"categorySecondary": "",
-    |	"title": "Win a €750 Voucher",
-    |	"subtitle": "thanks to someone.",
-    |	"type": "classic",
-    |	"index": 100,
-    |	"order": 2,
-    |	"urlBannerImageLarge": "someurl",
-    |	"urlBannerImageLargeApp": "someurl",
-    |	"urlBannerImageMedium": "someurl",
-    |	"urlBannerImageMediumApp": "someurl",
-    |	"urlBannerImageSmall": "someurl",
-    |	"urlBannerImageSmallApp": "someurl",
-    |	"redirectionUrl": "",
-    |	"distance": null,
-    |	"help": "Thanks for entering! You’re in the pot to win a €750 voucher.",
-    |	"name": "[COMPETITION] Win a €750 Voucher",
-    |	"supplierName": "Competition",
-    |	"qrCode": false,
-    |	"urlName": "some-url",
-    |	"maxNbOfOffer": 1,
-    |	"remaining": 0
-    |}, {
     |	"id": 444,
     |	"category": "competitions",
     |	"categorySecondary": "",
@@ -144,6 +120,64 @@ object TestData {
     |	"remaining": 1
     |}]
   """.stripMargin
+
+  val remainingIsZeroCompetitions =
+  """
+    |[{
+    |	"id": 333,
+    |	"category": "competitions",
+    |	"categorySecondary": "",
+    |	"title": "Win a €750 Voucher",
+    |	"subtitle": "thanks to someone.",
+    |	"type": "classic",
+    |	"index": 100,
+    |	"order": 2,
+    |	"urlBannerImageLarge": "someurl",
+    |	"urlBannerImageLargeApp": "someurl",
+    |	"urlBannerImageMedium": "someurl",
+    |	"urlBannerImageMediumApp": "someurl",
+    |	"urlBannerImageSmall": "someurl",
+    |	"urlBannerImageSmallApp": "someurl",
+    |	"redirectionUrl": "",
+    |	"distance": null,
+    |	"help": "Thanks for entering! You’re in the pot to win a €750 voucher.",
+    |	"name": "[COMPETITION] Win a €750 Voucher",
+    |	"supplierName": "Competition",
+    |	"qrCode": false,
+    |	"urlName": "some-url",
+    |	"maxNbOfOffer": 1,
+    |	"remaining": 0
+    |}]
+    |""".stripMargin
+
+  val staticCompetition =
+    """
+    |[{
+    |	"id": 555,
+    |	"category": "competitions",
+    |	"categorySecondary": "",
+    |	"title": "Click here to view ....",
+    |	"subtitle": "Blah blah",
+    |	"type": "static",
+    |	"index": 100,
+    |	"order": 2,
+    |	"urlBannerImageLarge": "someurl",
+    |	"urlBannerImageLargeApp": "someurl",
+    |	"urlBannerImageMedium": "someurl",
+    |	"urlBannerImageMediumApp": "someurl",
+    |	"urlBannerImageSmall": "someurl",
+    |	"urlBannerImageSmallApp": "someurl",
+    |	"redirectionUrl": "",
+    |	"distance": null,
+    |	"help": "",
+    |	"name": "[COMPETITION] Click here to view...",
+    |	"supplierName": "Competition",
+    |	"qrCode": false,
+    |	"urlName": "some-url",
+    |	"maxNbOfOffer": 1,
+    |	"remaining": 0
+    |}]
+    |""".stripMargin
 
   val enterCompetitionErrorResponse: String =
     """
