@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ayltai/setup-graalvm@v1
+      with:
+        java-version: 11
+        graalvm-version: 20.1.0
+        native-image: true
+
+    - name: Build artifacts
+      run: |
+        sbt clean compile test assembly graalvm-native-image:packageBin
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} 
+        asset_path: ./ThreeCompetitionEnterer.jar
+        asset_name: ThreeCompetitionEnterer.jar
+        asset_content_type: application/java-archive
