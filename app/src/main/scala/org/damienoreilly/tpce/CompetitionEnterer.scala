@@ -110,7 +110,8 @@ object CompetitionEnterer extends Http4sClientDsl[IO] {
             )
           }
       }
-      .map(_.sequence_)
+      .map(x =>
+        if (x.isEmpty) Logger[IO].info("No competitions available.") else IO.unit *> x.sequence_)
       .foldF(identity, identity)
   }
 
