@@ -14,4 +14,6 @@ lazy val app = (project in file("app"))
   .settings(commonSettings: _*)
   .settings(
     mainClass in assembly := Some("org.damienoreilly.tpce.ThreePlusCompetitionApp")
-  ).enablePlugins(JavaAppPackaging, GraalVMNativeImagePlugin)
+  )
+  .settings(assemblyJarName in assembly := "ThreePlusCompetitionApp.jar")
+  .enablePlugins(JavaAppPackaging, GraalVMNativeImagePlugin)
