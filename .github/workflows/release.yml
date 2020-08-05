@@ -20,7 +20,7 @@ jobs:
 
     - name: Build artifacts
       run: |
-        sbt clean compile test assembly graalvm-native-image:packageBin
+        sbt clean compile test assembly
 
     - name: Create Release
       id: create_release
@@ -40,6 +40,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} 
-        asset_path: ./ThreeCompetitionEnterer.jar
+        asset_path: ./app/target/scala-2.13/ThreePlusCompetitionApp.jar
         asset_name: ThreeCompetitionEnterer.jar
         asset_content_type: application/java-archive
