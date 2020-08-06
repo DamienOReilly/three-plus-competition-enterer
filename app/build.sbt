@@ -31,8 +31,6 @@ graalVMNativeImageOptions ++= Seq(
   "-H:+TraceServiceLoaderFeature",
   "-H:+ReportUnsupportedElementsAtRuntime",
   "-H:+ReportExceptionStackTraces",
-  "-H:IncludeResources=application.conf",
-  "-H:IncludeResources=logback.xml",
   "-H:Log=registerResource:",
   "--enable-https"
 )
