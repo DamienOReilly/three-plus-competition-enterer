@@ -3,7 +3,7 @@ name := "ThreePlusCompetitionApp"
 import Versions._
 
 graalVMNativeImageOptions ++= Seq(
-  "--static",
+  "--static"
   "--no-server",
   "--verbose",
   "--no-fallback",
@@ -27,7 +27,6 @@ graalVMNativeImageOptions ++= Seq(
     "scala.package$," +
     "scala.reflect.Manifest$,scala.math.BigInt$",
   "-H:+RemoveSaturatedTypeFlows",
-  "-H:+TraceClassInitialization",
   "-H:+TraceServiceLoaderFeature",
   "-H:+ReportUnsupportedElementsAtRuntime",
   "-H:+ReportExceptionStackTraces",
@@ -41,8 +40,8 @@ libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-client" % http4sVersion,
   "org.http4s" %% "http4s-circe"        % http4sVersion,
 
-  "io.chrisdavenport" %% "log4cats-core"    % log4catsVersion,
-  "io.chrisdavenport" %% "log4cats-slf4j"   % log4catsVersion,
+  "org.typelevel" %% "log4cats-core"    % log4catsVersion,
+  "org.typelevel" %% "log4cats-slf4j"   % log4catsVersion,
 
   "io.circe" %% "circe-generic"        % circeVersion,
   "io.circe" %% "circe-literal"        % circeVersion,
@@ -53,7 +52,10 @@ libraryDependencies ++= Seq(
 
   "ch.qos.logback" % "logback-classic" % logbackVersion,
 
+  "org.graalvm.nativeimage" % "svm"      % graalvmVersion % Provided,
+  "org.scalameta"          %% "svm-subs" % graalvmVersion,
+
   "org.scalatest" %% "scalatest" % scalaTestVersion % Test,
 
-  "com.disneystreaming" %% "weaver-framework" % weaverFrameworkVersion % Test
+  "com.disneystreaming" %% "weaver-cats" % weaverFrameworkVersion % Test
 )

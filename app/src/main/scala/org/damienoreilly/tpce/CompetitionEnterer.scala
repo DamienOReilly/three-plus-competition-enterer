@@ -4,14 +4,14 @@ import cats.effect.IO
 import cats.instances.list.catsStdInstancesForList
 import cats.syntax.foldable.catsSyntaxNestedFoldable
 import cats.syntax.traverse.toTraverseOps
-import io.chrisdavenport.log4cats.slf4j.Slf4jLogger
-import io.chrisdavenport.log4cats.{Logger, SelfAwareStructuredLogger}
 import org.damienoreilly.tpce.Codecs._
 import org.http4s.Status.{ClientError, Successful}
 import org.http4s._
 import org.http4s.client.Client
 import org.http4s.client.dsl.Http4sClientDsl
 import org.http4s.headers.{Accept, Authorization}
+import org.typelevel.log4cats.{Logger, SelfAwareStructuredLogger}
+import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 object CompetitionEnterer extends Http4sClientDsl[IO] {
 

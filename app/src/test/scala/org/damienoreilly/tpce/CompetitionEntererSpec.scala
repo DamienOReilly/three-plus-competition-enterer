@@ -23,7 +23,7 @@ object CompetitionEntererSpec
       uri"http://localhost"
     )
 
-  simpleTest(
+  test(
     "enterCompetitions should return RequestError if Three Plus API cannot serve the request") {
 
     val resp = HttpApp.pure(Response[IO](BadRequest).withEntity(badCredentialsResponse))
@@ -38,7 +38,7 @@ object CompetitionEntererSpec
     }
   }
 
-  simpleTest(
+  test(
     "enterCompetitions should return FatalError if there is a problem with the Three Plus API") {
 
     val resp = HttpApp.pure(Response[IO](BadRequest).withEntity(fatalErrorResponse))
@@ -60,7 +60,7 @@ object CompetitionEntererSpec
     }
   }
 
-  simpleTest(
+  test(
     "enterCompetitions should return UnknownResponse if they payload from Three Plus API is not recognised") {
 
     val resp = HttpApp.pure(Response[IO](BadRequest).withEntity("Some unexpected body"))
@@ -75,7 +75,7 @@ object CompetitionEntererSpec
     }
   }
 
-  simpleTest("enterCompetitions should return list of competitions entered with results") {
+  test("enterCompetitions should return list of competitions entered with results") {
 
     val resp = HttpApp[IO] {
       case POST -> Root / "core" / "oauth" / "token" =>
@@ -110,7 +110,7 @@ object CompetitionEntererSpec
     } yield success
   }
 
-  simpleTest("enterCompetitions should not try enter competitions with property remaining != 1") {
+  test("enterCompetitions should not try enter competitions with property remaining != 1") {
 
     val resp = HttpApp[IO] {
       case POST -> Root / "core" / "oauth" / "token" =>
@@ -132,7 +132,7 @@ object CompetitionEntererSpec
     } yield success
   }
 
-  simpleTest("enterCompetitions should not try enter competitions with type 'static'") {
+  test("enterCompetitions should not try enter competitions with type 'static'") {
 
     val resp = HttpApp[IO] {
       case POST -> Root / "core" / "oauth" / "token" =>

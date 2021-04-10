@@ -1,11 +1,11 @@
 name := "ThreePlusCompetitionEnterer"
 
 lazy val commonSettings = Seq(
-  version := "0.4",
+  version := "0.5",
   organization := "org.damienoreilly.tpce",
-  scalaVersion := "2.13.3",
+  scalaVersion := "2.13.5",
   test in assembly := {},
-  testFrameworks += new TestFramework("weaver.framework.TestFramework")
+  testFrameworks += new TestFramework("weaver.framework.CatsEffect")
 )
 
 resolvers += Resolver.sonatypeRepo("snapshots")
