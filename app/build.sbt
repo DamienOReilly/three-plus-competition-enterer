@@ -3,7 +3,7 @@ name := "ThreePlusCompetitionApp"
 import Versions._
 
 graalVMNativeImageOptions ++= Seq(
-  "--static"
+  "--static",
   "--no-server",
   "--verbose",
   "--no-fallback",
