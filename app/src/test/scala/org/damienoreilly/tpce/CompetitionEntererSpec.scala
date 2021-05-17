@@ -4,11 +4,14 @@ import cats.effect.IO
 import org.damienoreilly.tpce.TestData._
 import org.http4s.client.Client
 import org.http4s.dsl.Http4sDsl
+import org.http4s.headers.`Content-Type`
 import org.http4s.implicits.http4sLiteralsSyntax
-import org.http4s.{HttpApp, Response}
+import org.http4s.{Headers, HttpApp, Media, MediaType, Response}
 import org.scalatest.EitherValues
 import org.scalatest.matchers.should.Matchers
 import weaver.SimpleIOSuite
+
+import java.nio.charset.StandardCharsets
 
 object CompetitionEntererSpec
     extends SimpleIOSuite
@@ -23,10 +26,76 @@ object CompetitionEntererSpec
       uri"http://localhost"
     )
 
-  test(
-    "enterCompetitions should return RequestError if Three Plus API cannot serve the request") {
+  private def media(data: String) =
+    Media.apply[IO](
+      fs2.Stream.emits(data.getBytes(StandardCharsets.UTF_8)),
+      Headers(`Content-Type`.apply(MediaType.application.json))
+    )
 
-    val resp = HttpApp.pure(Response[IO](BadRequest).withEntity(badCredentialsResponse))
+  test("tokenEntityDecoder should parse a token on the login success") {
+    val expected = Token("dummytoken")
+    Codecs.tokenEntityDecoder
+      .decode(media(TestData.loginSuccessResponse), strict = true)
+      .value
+      .map { result =>
+        expect(result.value.equals(expected))
+      }
+  }
+
+  test("errorEntityDecoder should parse the error on the login failure") {
+    val expected = RequestError("invalid_grant", "Bad credentials")
+    Codecs.errorEntityDecoder
+      .decode(media(TestData.loginFailureResponse), strict = true)
+      .value
+      .map { result =>
+        expect(result.value.equals(expected))
+      }
+  }
+
+  test("errorEntityDecoder should parse the error on API errors") {
+    val expected = CompetitionEnteringError("Something bad happened", 405)
+    Codecs.errorEntityDecoder
+      .decode(media(TestData.fatalErrorResponse), strict = true)
+      .value
+      .map { result =>
+        expect(result.value.equals(expected))
+      }
+  }
+
+  test("errorEntityDecoder should parse the error on API errors") {
+    val expected = CompetitionEntered(None, None, None, None, None)
+    Codecs.competitionEnteredDecoder
+      .decode(media(TestData.competitionEnteredResponse), strict = true)
+      .value
+      .map { result =>
+        expect(result.value.equals(expected))
+      }
+  }
+
+  test("competitionEntityDecoder should parse a token from the login response") {
+    val expected = List(
+      Competition(111, "Win a €250 Voucher", "classic", "[COMPETITION] Win a €250 Voucher", 1),
+      Competition(222, "Win a €250 Voucher", "classic", "[COMPETITION] Win a €500 Voucher", 1),
+      Competition(444, "Win a €1000 Voucher", "classic", "[COMPETITION] Win a €1000 Voucher", 1)
+    )
+
+    Codecs.competitionEntityDecoder
+      .decode(
+        Media.apply(
+          fs2.Stream.emits(TestData.competitionsResponse.getBytes(StandardCharsets.UTF_8)),
+          Headers(`Content-Type`.apply(MediaType.application.json))
+        ),
+        strict = true
+      )
+      .value
+      .map { result =>
+        expect(result.value.equals(expected))
+      }
+  }
+
+  test("enterCompetitions should return RequestError if Three Plus API cannot serve the request") {
+
+    val resp = HttpApp.pure(Response[IO](BadRequest).withEntity(loginFailureResponse))
     val client: Client[IO] = Client.fromHttpApp(resp)
 
     val expectedResponse = RequestError("invalid_grant", "Bad credentials")
@@ -39,29 +108,8 @@ object CompetitionEntererSpec
   }
 
   test(
-    "enterCompetitions should return FatalError if there is a problem with the Three Plus API") {
-
-    val resp = HttpApp.pure(Response[IO](BadRequest).withEntity(fatalErrorResponse))
-    val client: Client[IO] = Client.fromHttpApp(resp)
-
-    val expectedResponse = FatalError(
-      1539970430277L,
-      405,
-      "Method Not Allowed",
-      "java.lang.Exception",
-      "Something bad happened",
-      "/some/path"
-    )
-
-    val result = CompetitionEnterer.enterCompetitions(config, client)
-
-    result.value.map { response =>
-      expect(response.left.value.equals(expectedResponse))
-    }
-  }
-
-  test(
-    "enterCompetitions should return UnknownResponse if they payload from Three Plus API is not recognised") {
+    "enterCompetitions should return UnknownResponse if they payload from Three Plus API is not recognised"
+  ) {
 
     val resp = HttpApp.pure(Response[IO](BadRequest).withEntity("Some unexpected body"))
     val client: Client[IO] = Client.fromHttpApp(resp)
@@ -83,7 +131,7 @@ object CompetitionEntererSpec
       case GET -> Root / "core" / "offers" / "competitions" =>
         Ok(competitionsResponse)
       case PUT -> Root / "core" / "offers" / ("111" | "222") / "competitions" / "purchase" =>
-        Ok(enteredCompetitionResponse)
+        Ok(competitionEnteredResponse)
       case PUT -> Root / "core" / "offers" / "444" / "competitions" / "purchase" =>
         LengthRequired(enterCompetitionErrorResponse)
       case _ => NotFound()
@@ -95,18 +143,26 @@ object CompetitionEntererSpec
     for {
       result <- CompetitionEnterer.enterCompetitions(config, client).value
       comp <- IO(
-        result.fold(_ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
-                    _.map(_._2).map(_.value)))
+        result.fold(
+          _ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
+          _.map(_._2).map(_.value)
+        )
+      )
       first = comp.head
       second = comp(1)
       third = comp(2)
       _ <- expect(comp.size == 3).failFast
       _ <- first.flatMap(item =>
-        expect(item.equals(Right(CompetitionEntered(None, None, None, None, None)))).failFast)
+        expect(item.equals(Right(CompetitionEntered(None, None, None, None, None)))).failFast
+      )
       _ <- second.flatMap(item =>
-        expect(item.equals(Right(CompetitionEntered(None, None, None, None, None)))).failFast)
+        expect(item.equals(Right(CompetitionEntered(None, None, None, None, None)))).failFast
+      )
       _ <- third.flatMap(item =>
-        expect(item.equals(Left(CompetitionEnteringError("subscriber.offer.limit.reached", 411)))).failFast)
+        expect(
+          item.equals(Left(CompetitionEnteringError("subscriber.offer.limit.reached", 411)))
+        ).failFast
+      )
     } yield success
   }
 
@@ -125,8 +181,11 @@ object CompetitionEntererSpec
     for {
       result <- CompetitionEnterer.enterCompetitions(config, client).value
       comp <- IO(
-        result.fold(_ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
-                    _.map(_._2).map(_.value)))
+        result.fold(
+          _ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
+          _.map(_._2).map(_.value)
+        )
+      )
       _ <- expect(comp.isEmpty).failFast
 
     } yield success
@@ -147,8 +206,11 @@ object CompetitionEntererSpec
     for {
       result <- CompetitionEnterer.enterCompetitions(config, client).value
       comp <- IO(
-        result.fold(_ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
-                    _.map(_._2).map(_.value)))
+        result.fold(
+          _ => List.empty[IO[Either[ThreePlusError, CompetitionEntered]]],
+          _.map(_._2).map(_.value)
+        )
+      )
       _ <- expect(comp.isEmpty).failFast
 
     } yield success

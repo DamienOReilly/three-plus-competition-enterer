@@ -1,10 +1,12 @@
 name := "ThreePlusCompetitionEnterer"
 
+//ThisBuild / scalacOptions += "-P:semanticdb:synthetics:on"
+
 lazy val commonSettings = Seq(
-  version := "0.5",
+  version := "0.6",
   organization := "org.damienoreilly.tpce",
   scalaVersion := "2.13.5",
-  test in assembly := {},
+  assembly / test := {},
   testFrameworks += new TestFramework("weaver.framework.CatsEffect")
 )
 
@@ -13,7 +15,7 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 lazy val app = (project in file("app"))
   .settings(commonSettings: _*)
   .settings(
-    mainClass in assembly := Some("org.damienoreilly.tpce.ThreePlusCompetitionApp")
+    assembly / mainClass := Some("org.damienoreilly.tpce.ThreePlusCompetitionApp")
   )
-  .settings(assemblyJarName in assembly := "ThreePlusCompetitionApp.jar")
+  .settings(assembly / assemblyJarName := "ThreePlusCompetitionApp.jar")
   .enablePlugins(JavaAppPackaging, GraalVMNativeImagePlugin)

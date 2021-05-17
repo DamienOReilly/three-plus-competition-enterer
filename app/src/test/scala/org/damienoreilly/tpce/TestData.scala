@@ -2,14 +2,6 @@ package org.damienoreilly.tpce
 
 object TestData {
 
-  val badCredentialsResponse: String =
-    """
-      |{  
-      |   "error": "invalid_grant",
-      |   "error_description": "Bad credentials"
-      |}
-    """.stripMargin
-
   val fatalErrorResponse: String =
     """
     |{
@@ -25,7 +17,7 @@ object TestData {
   val loginSuccessResponse: String =
     """
     |{  
-    |   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJhdWQiOlsib2F1dGgyLXJlc291cmNlIl0sInVzZXJfbmFtZSI6IjA4MzAwMDAwMDAiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNTQzMDEwMDAwMCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6Inh4eHh4eHh4LXh4eHgteHh4eC14eHh4LXh4eHh4eHh4eHh4eCIsImNsaWVudF9pZCI6ImNsaWVudGlkIn0CYAdUF1kwzIlMbVhFeCxgWVJUbB9eEA==",
+    |   "access_token": "dummytoken",
     |   "token_type": "bearer",
     |   "expires_in": 2591999,
     |   "scope": "read write",
@@ -33,7 +25,15 @@ object TestData {
     |}
   """.stripMargin
 
-  val enteredCompetitionResponse: String =
+  val loginFailureResponse: String =
+    """
+      |{
+      |   "error": "invalid_grant",
+      |   "error_description": "Bad credentials"
+      |}
+    """.stripMargin
+
+  val competitionEnteredResponse: String =
     """
     |{
     |  "voucher" : null,
@@ -122,7 +122,7 @@ object TestData {
   """.stripMargin
 
   val remainingIsZeroCompetitions =
-  """
+    """
     |[{
     |	"id": 333,
     |	"category": "competitions",

@@ -36,26 +36,29 @@ graalVMNativeImageOptions ++= Seq(
 
 libraryDependencies ++= Seq(
 
+  "ch.qos.logback" % "logback-classic" % logbackVersion,
+
+  "com.github.pureconfig" %% "pureconfig"        % pureConfigVersion,
+//  "com.github.pureconfig" %% "pureconfig-http4s" % pureConfigVersion,
+
+  "io.circe" %% "circe-generic"        % circeVersion,
+  "io.circe" %% "circe-literal"        % circeVersion,
+  "io.circe" %% "circe-parser"         % circeVersion % Test,
+
+  "org.graalvm.nativeimage" % "svm"      % graalvmVersion % Provided,
+
   "org.http4s" %% "http4s-dsl"          % http4sVersion,
   "org.http4s" %% "http4s-blaze-client" % http4sVersion,
   "org.http4s" %% "http4s-circe"        % http4sVersion,
 
+  "org.scalameta" %% "svm-subs" % svmSubsVersion,
+
+  "org.typelevel" %% "cats-effect"      % catsEffectVersion,
+
   "org.typelevel" %% "log4cats-core"    % log4catsVersion,
   "org.typelevel" %% "log4cats-slf4j"   % log4catsVersion,
 
-  "io.circe" %% "circe-generic"        % circeVersion,
-  "io.circe" %% "circe-literal"        % circeVersion,
-  "io.circe" %% "circe-generic-extras" % circeVersion,
-
-  "com.github.pureconfig" %% "pureconfig"        % pureConfigVersion,
-  "com.github.pureconfig" %% "pureconfig-http4s" % pureConfigVersion,
-
-  "ch.qos.logback" % "logback-classic" % logbackVersion,
-
-  "org.graalvm.nativeimage" % "svm"      % graalvmVersion % Provided,
-  "org.scalameta"          %% "svm-subs" % graalvmVersion,
+  "com.disneystreaming" %% "weaver-cats" % weaverFrameworkVersion % Test,
 
   "org.scalatest" %% "scalatest" % scalaTestVersion % Test,
-
-  "com.disneystreaming" %% "weaver-cats" % weaverFrameworkVersion % Test
 )

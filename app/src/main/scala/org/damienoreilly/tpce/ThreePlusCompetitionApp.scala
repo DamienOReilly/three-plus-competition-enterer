@@ -3,6 +3,7 @@ package org.damienoreilly.tpce
 import cats.effect.{ExitCode, IO, IOApp}
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
+import pureconfig.generic.auto._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -14,11 +15,7 @@ object ThreePlusCompetitionApp extends IOApp {
       .as(ExitCode.Success)
 
   private def start(client: Client[IO]): IO[Unit] = {
-
-    import pureconfig.module.http4s._
-    import pureconfig.generic.auto._
     val config = pureconfig.ConfigSource.default.loadOrThrow[AppConfig]
-
     CompetitionEnterer(config, client)
   }
 }
