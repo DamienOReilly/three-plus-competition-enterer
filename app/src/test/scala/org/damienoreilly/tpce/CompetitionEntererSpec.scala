@@ -62,7 +62,7 @@ object CompetitionEntererSpec
       }
   }
 
-  test("errorEntityDecoder should parse the error on API errors") {
+  test("competitionEnteredDecoder should parse the error on API errors") {
     val expected = CompetitionEntered(None, None, None, None, None)
     Codecs.competitionEnteredDecoder
       .decode(media(TestData.competitionEnteredResponse), strict = true)

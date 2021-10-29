@@ -1,12 +1,10 @@
 name := "ThreePlusCompetitionEnterer"
 
-//ThisBuild / scalacOptions += "-P:semanticdb:synthetics:on"
-
 lazy val commonSettings = Seq(
-  version := "0.6",
+  version := "0.7",
   organization := "org.damienoreilly.tpce",
-  scalaVersion := "2.13.5",
   assembly / test := {},
+  scalaVersion := "2.13.6",
   testFrameworks += new TestFramework("weaver.framework.CatsEffect")
 )
 

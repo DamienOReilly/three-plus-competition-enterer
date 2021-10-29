@@ -4,7 +4,8 @@ Just a tiny app to enter you into the Three Plus (Ireland) competitions automati
 
 ### Prerequisites
 
-Java 8+
+- Java 11+
+- Scala 2.13
 
 ### Compile and run tests
 ```

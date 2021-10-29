@@ -13,8 +13,8 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ayltai/setup-graalvm@v1
       with:
-        java-version: 11
-        graalvm-version: 21.1.0
+        java-version: 16
+        graalvm-version: 21.2.0
         native-image: true
 
     - name: Build artifacts
